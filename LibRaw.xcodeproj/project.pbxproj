@@ -6,6 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXCopyFilesBuildPhase section */
+		37D4CD082D4FB23600D4045B /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		37D4CCD02D4FAEB200D4045B /* LibRaw.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibRaw.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -13,18 +26,50 @@
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		37D4CCD52D4FAEB200D4045B /* Exceptions for "LibRaw" folder in "LibRaw" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Dylib/libjasper.4.dylib,
+				Dylib/libjpeg.8.dylib,
+				Dylib/liblcms2.2.dylib,
+				Dylib/libomp.dylib,
+				Dylib/libz.1.dylib,
+			);
 			publicHeaders = (
-				LibRaw.h,
+				LibRawFramework.h,
+				LibRawWrapper.h,
 			);
 			target = 37D4CCCF2D4FAEB200D4045B /* LibRaw */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		37D4CD092D4FB23600D4045B /* Exceptions for "LibRaw" folder in "Embed Libraries" phase from "LibRaw" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			attributesByRelativePath = {
+				Dylib/libjasper.4.dylib = (CodeSignOnCopy, );
+				Dylib/libjpeg.8.dylib = (CodeSignOnCopy, );
+				Dylib/liblcms2.2.dylib = (CodeSignOnCopy, );
+				Dylib/libomp.dylib = (CodeSignOnCopy, );
+				Dylib/libraw.23.dylib = (CodeSignOnCopy, );
+				Dylib/libz.1.dylib = (CodeSignOnCopy, );
+			};
+			buildPhase = 37D4CD082D4FB23600D4045B /* Embed Libraries */;
+			membershipExceptions = (
+				Dylib/libjasper.4.dylib,
+				Dylib/libjpeg.8.dylib,
+				Dylib/liblcms2.2.dylib,
+				Dylib/libomp.dylib,
+				Dylib/libraw.23.dylib,
+				Dylib/libz.1.dylib,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		37D4CCD22D4FAEB200D4045B /* LibRaw */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				37D4CCD52D4FAEB200D4045B /* Exceptions for "LibRaw" folder in "LibRaw" target */,
+				37D4CD092D4FB23600D4045B /* Exceptions for "LibRaw" folder in "Embed Libraries" phase from "LibRaw" target */,
 			);
 			path = LibRaw;
 			sourceTree = "<group>";
@@ -46,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				37D4CCD22D4FAEB200D4045B /* LibRaw */,
+				37D4CD0A2D4FB25900D4045B /* Frameworks */,
 				37D4CCD12D4FAEB200D4045B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -56,6 +102,13 @@
 				37D4CCD02D4FAEB200D4045B /* LibRaw.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		37D4CD0A2D4FB25900D4045B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -79,6 +132,7 @@
 				37D4CCCC2D4FAEB200D4045B /* Sources */,
 				37D4CCCD2D4FAEB200D4045B /* Frameworks */,
 				37D4CCCE2D4FAEB200D4045B /* Resources */,
+				37D4CD082D4FB23600D4045B /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -105,6 +159,7 @@
 				TargetAttributes = {
 					37D4CCCF2D4FAEB200D4045B = {
 						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1620;
 					};
 				};
 			};
@@ -151,6 +206,7 @@
 		37D4CCD72D4FAEB200D4045B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -168,6 +224,11 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/LibRaw/Dylib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
@@ -175,12 +236,15 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
 		37D4CCD82D4FAEB200D4045B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -198,6 +262,11 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/LibRaw/Dylib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
@@ -205,6 +274,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};
