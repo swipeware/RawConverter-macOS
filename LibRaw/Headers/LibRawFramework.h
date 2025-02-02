@@ -6,7 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "LibRawWrapper.h"
+#import <LibRaw/LibRawWrapper.h>
 
 //! Project version number for LibRaw.
 FOUNDATION_EXPORT double LibRawVersionNumber;

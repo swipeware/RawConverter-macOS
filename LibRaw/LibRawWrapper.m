@@ -7,3 +7,4 @@
 
 #import <Foundation/Foundation.h>
 #import "LibRawWrapper.h"
+#import "libraw.h"
