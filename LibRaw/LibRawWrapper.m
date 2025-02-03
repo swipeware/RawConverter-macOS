@@ -8,11 +8,16 @@
 #import "LibRawWrapper.h"
 #import "libraw.h"
 
+// Instance variables
+@interface LibRawWrapper ()
+{
+  libraw_data_t *rawData;
+}
+@end
+
+
+// Let's define the wrapper!
 @implementation LibRawWrapper
-
-// Internal data
-libraw_data_t *rawData;
-
 
 - (instancetype)initWithFlags:(unsigned int)flags {
   self = [super init];
