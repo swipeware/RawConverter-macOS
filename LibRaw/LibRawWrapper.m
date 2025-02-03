@@ -8,6 +8,17 @@
 #import "LibRawWrapper.h"
 #import "libraw.h"
 
+// File level configuration
+static NSString * const LIBRAW_DOMAIN = @"com.swipeware.LibRawWrapper";
+
+static NSError *LibRawError(NSString *errorDescription) {
+    NSError *error = [NSError errorWithDomain: LIBRAW_DOMAIN
+                      code: 1001
+                      userInfo: @{NSLocalizedDescriptionKey: errorDescription}];
+    return error;
+}
+
+
 // Instance variables
 @interface LibRawWrapper ()
 {
@@ -19,17 +30,19 @@
 // Let's define the wrapper!
 @implementation LibRawWrapper
 
-- (instancetype)initWithFlags:(unsigned int)flags {
+- (nullable instancetype)initWithError:(NSError **)errorHandler {
   self = [super init];
   if (self) {
-    rawContext = libraw_init(flags);
+    rawContext = libraw_init(0);
     
     if (!rawContext) {
-      NSLog(@"ERROR: libraw_init failed with flags: %u", flags);
+      if (errorHandler) {
+        *errorHandler = LibRawError(@"ERROR: Failed to create LibRaw context");
+      }
       return nil;
     }
     
-    NSLog(@"DEBUG: Successfully initialized libraw with flags: %u", flags);
+    NSLog(@"DEBUG: Successfully initialized libraw");
   }
   return self;
 }
