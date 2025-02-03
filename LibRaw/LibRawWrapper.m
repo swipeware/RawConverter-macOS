@@ -11,7 +11,7 @@
 // Instance variables
 @interface LibRawWrapper ()
 {
-  libraw_data_t *rawData;
+  libraw_data_t *rawContext;
 }
 @end
 
@@ -22,9 +22,9 @@
 - (instancetype)initWithFlags:(unsigned int)flags {
   self = [super init];
   if (self) {
-    rawData = libraw_init(flags);
+    rawContext = libraw_init(flags);
     
-    if (!rawData) {
+    if (!rawContext) {
       NSLog(@"ERROR: libraw_init failed with flags: %u", flags);
       return nil;
     }
@@ -35,8 +35,8 @@
 }
 
 - (void)dealloc {
-  if (rawData) {
-    libraw_close(rawData);
+  if (rawContext) {
+    libraw_close(rawContext);
     NSLog(@"DEBUG: Successful dealloc");
   }
 }
