@@ -27,9 +27,9 @@
 		37D4CCD52D4FAEB200D4045B /* Exceptions for "LibRaw" folder in "LibRaw" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Dylib/libjpeg.8.dylib,
 				Dylib/liblcms2.2.dylib,
 				Dylib/libz.1.dylib,
+				Scripts/fixlibs.sh,
 			);
 			publicHeaders = (
 				Headers/LibRawFramework.h,
@@ -43,14 +43,12 @@
 		37D4CD092D4FB23600D4045B /* Exceptions for "LibRaw" folder in "Embed Libraries" phase from "LibRaw" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
-				Dylib/libjpeg.8.dylib = (CodeSignOnCopy, );
 				Dylib/liblcms2.2.dylib = (CodeSignOnCopy, );
 				Dylib/libraw.24.dylib = (CodeSignOnCopy, );
 				Dylib/libz.1.dylib = (CodeSignOnCopy, );
 			};
 			buildPhase = 37D4CD082D4FB23600D4045B /* Embed Libraries */;
 			membershipExceptions = (
-				Dylib/libjpeg.8.dylib,
 				Dylib/liblcms2.2.dylib,
 				Dylib/libraw.24.dylib,
 				Dylib/libz.1.dylib,

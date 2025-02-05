@@ -191,7 +191,7 @@ static NSError *LibRawError(NSString *errorDescription) {
 
 - (BOOL)adjustOutputParametersWithSettings:(NSArray<NSString *> *)settings error:(NSError **)errorHandler {
   // Log the size of libraw_rawdata_t for debugging (using NSLog for demonstration)
-  NSLog(@"Size: %lu", (unsigned long)sizeof(libraw_data_t));
+  //NSLog(@"Size: %lu", (unsigned long)sizeof(libraw_data_t));
   
   // Iterate over the settings array using an index so we can fetch subsequent values
   for (NSUInteger i = 0; i < settings.count; i++) {
@@ -203,121 +203,119 @@ static NSError *LibRawError(NSString *errorDescription) {
     else if ([setting isEqualToString:@"-W"]) { // No auto bright
       rawContext->params.no_auto_bright = (int)1;
     }
-//    else if ([setting isEqualToString:@"-n"]) { // Noise threshold
-//      if (i + 1 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing noise threshold value after -n"); }
-//        return NO;
-//      }
-//      i++; // advance to threshold value
-//      NSString *thresholdStr = settings[i];
-//      float threshold = [thresholdStr floatValue];
-//      rawContext->params.threshold = threshold;
-//    }
-//    else if ([setting isEqualToString:@"-C"]) { // Red and blue magnification
-//      if (i + 1 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing red and blue values after -C"); }
-//        return NO;
-//      }
-//      i++; // advance to the string with red and blue values
-//      NSString *partsStr = settings[i];
-//      // Split the string on spaces (assuming values are space-separated)
-//      NSArray<NSString *> *parts = [partsStr componentsSeparatedByString:@" "];
-//      if (parts.count < 2) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Invalid red and blue values for -C"); }
-//        return NO;
-//      }
-//      double red = [parts[0] doubleValue];
-//      if (red == 0) { red = 1; }  // Avoid division by zero
-//      double blue = [parts[1] doubleValue];
-//      if (blue == 0) { blue = 1; }
-//      rawContext->params.aber[0] = 1.0 / red;
-//      rawContext->params.aber[2] = 1.0 / blue;
-//    }
-//    else if ([setting isEqualToString:@"-H"]) { // Highlights
-//      if (i + 1 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing highlight value after -H"); }
-//        return NO;
-//      }
-//      i++;
-//      NSString *highlightStr = settings[i];
-//      int32_t highlight = [highlightStr intValue];
-//      rawContext->params.highlight = highlight;
-//    }
-//    else if ([setting isEqualToString:@"-a"]) { // Auto white balance
-//      rawContext->params.use_auto_wb = 1;
-//      rawContext->params.use_camera_wb = 0;
-//    }
+    else if ([setting isEqualToString:@"-n"]) { // Noise threshold
+      if (i + 1 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing noise threshold value after -n"); }
+        return NO;
+      }
+      i++; // advance to threshold value
+      NSString *thresholdStr = settings[i];
+      float threshold = [thresholdStr floatValue];
+      rawContext->params.threshold = threshold;
+    }
+    else if ([setting isEqualToString:@"-C"]) { // Red and blue magnification
+      if (i + 1 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing red and blue values after -C"); }
+        return NO;
+      }
+      i++; // advance to the string with red and blue values
+      NSString *partsStr = settings[i];
+      // Split the string on spaces (assuming values are space-separated)
+      NSArray<NSString *> *parts = [partsStr componentsSeparatedByString:@" "];
+      if (parts.count < 2) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Invalid red and blue values for -C"); }
+        return NO;
+      }
+      double red = [parts[0] doubleValue];
+      if (red == 0) { red = 1; }  // Avoid division by zero
+      double blue = [parts[1] doubleValue];
+      if (blue == 0) { blue = 1; }
+      rawContext->params.aber[0] = 1.0 / red;
+      rawContext->params.aber[2] = 1.0 / blue;
+    }
+    else if ([setting isEqualToString:@"-H"]) { // Highlights
+      if (i + 1 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing highlight value after -H"); }
+        return NO;
+      }
+      i++;
+      NSString *highlightStr = settings[i];
+      int32_t highlight = [highlightStr intValue];
+      rawContext->params.highlight = highlight;
+    }
+    else if ([setting isEqualToString:@"-a"]) { // Auto white balance
+      rawContext->params.use_auto_wb = 1;
+    }
     else if ([setting isEqualToString:@"-w"]) { // Camera white balance
-      //rawContext->params.use_auto_wb = 0;
       rawContext->params.use_camera_wb = (int)1;
     }
-//    else if ([setting isEqualToString:@"-o"]) { // Color space
-//      if (i + 1 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing color space value after -o"); }
-//        return NO;
-//      }
-//      i++;
-//      NSString *outputColorStr = settings[i];
-//      int32_t outputColor = [outputColorStr intValue];
-//      rawContext->params.output_color = outputColor;
-//    }
-//    else if ([setting isEqualToString:@"-q"]) { // Interpolation
-//      if (i + 1 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing interpolation value after -q"); }
-//        return NO;
-//      }
-//      i++;
-//      NSString *interpStr = settings[i];
-//      int32_t interpolation = [interpStr intValue];
-//      rawContext->params.user_qual = interpolation;
-//    }
-//    else if ([setting isEqualToString:@"-m"]) { // Cleanup passes
-//      if (i + 1 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing cleanup passes value after -m"); }
-//        return NO;
-//      }
-//      i++;
-//      NSString *cleanupStr = settings[i];
-//      int32_t cleanupPasses = [cleanupStr intValue];
-//      rawContext->params.med_passes = cleanupPasses;
-//    }
-//    else if ([setting isEqualToString:@"-f"]) { // Four colors
-//      rawContext->params.four_color_rgb = 1;
-//    }
-//    else if ([setting isEqualToString:@"-6"]) { // Sixteen bit
-//      rawContext->params.output_bps = 16;
-//    }
-//    else if ([setting isEqualToString:@"-b"]) { // Brightness
-//      if (i + 1 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing brightness value after -b"); }
-//        return NO;
-//      }
-//      i++;
-//      NSString *brightnessStr = settings[i];
-//      float brightness = [brightnessStr floatValue];
-//      rawContext->params.bright = brightness;
-//    }
-//    else if ([setting isEqualToString:@"-g"]) { // Gamma
-//      if (i + 2 >= settings.count) {
-//        if (errorHandler) { *errorHandler = LibRawError(@"Missing gamma values after -g"); }
-//        return NO;
-//      }
-//      i++;
-//      NSString *gammaPowerStr = settings[i];
-//      double gammaPower = [gammaPowerStr doubleValue];
-//      if (gammaPower == 0) { gammaPower = 1; }
-//      rawContext->params.gamm[0] = 1.0 / gammaPower;
-//      i++;
-//      NSString *gammaToeSlopeStr = settings[i];
-//      double gammaToeSlope = [gammaToeSlopeStr doubleValue];
-//      rawContext->params.gamm[2] = gammaToeSlope;
-//    }
-//    else {
-//      if (errorHandler) {
-//        *errorHandler = LibRawError([NSString stringWithFormat:@"Unknown setting: %@", setting]);
-//      }
-//      return NO;
-//    }
+    else if ([setting isEqualToString:@"-o"]) { // Color space
+      if (i + 1 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing color space value after -o"); }
+        return NO;
+      }
+      i++;
+      NSString *outputColorStr = settings[i];
+      int32_t outputColor = [outputColorStr intValue];
+      rawContext->params.output_color = outputColor;
+    }
+    else if ([setting isEqualToString:@"-q"]) { // Interpolation
+      if (i + 1 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing interpolation value after -q"); }
+        return NO;
+      }
+      i++;
+      NSString *interpStr = settings[i];
+      int32_t interpolation = [interpStr intValue];
+      rawContext->params.user_qual = interpolation;
+    }
+    else if ([setting isEqualToString:@"-m"]) { // Cleanup passes
+      if (i + 1 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing cleanup passes value after -m"); }
+        return NO;
+      }
+      i++;
+      NSString *cleanupStr = settings[i];
+      int32_t cleanupPasses = [cleanupStr intValue];
+      rawContext->params.med_passes = cleanupPasses;
+    }
+    else if ([setting isEqualToString:@"-f"]) { // Four colors
+      rawContext->params.four_color_rgb = 1;
+    }
+    else if ([setting isEqualToString:@"-6"]) { // Sixteen bit
+      rawContext->params.output_bps = 16;
+    }
+    else if ([setting isEqualToString:@"-b"]) { // Brightness
+      if (i + 1 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing brightness value after -b"); }
+        return NO;
+      }
+      i++;
+      NSString *brightnessStr = settings[i];
+      float brightness = [brightnessStr floatValue];
+      rawContext->params.bright = brightness;
+    }
+    else if ([setting isEqualToString:@"-g"]) { // Gamma
+      if (i + 2 >= settings.count) {
+        if (errorHandler) { *errorHandler = LibRawError(@"Missing gamma values after -g"); }
+        return NO;
+      }
+      i++;
+      NSString *gammaPowerStr = settings[i];
+      double gammaPower = [gammaPowerStr doubleValue];
+      if (gammaPower == 0) { gammaPower = 1; }
+      rawContext->params.gamm[0] = 1.0 / gammaPower;
+      i++;
+      NSString *gammaToeSlopeStr = settings[i];
+      double gammaToeSlope = [gammaToeSlopeStr doubleValue];
+      rawContext->params.gamm[2] = gammaToeSlope;
+    }
+    else {
+      if (errorHandler) {
+        *errorHandler = LibRawError([NSString stringWithFormat:@"Unknown setting: %@", setting]);
+      }
+      return NO;
+    }
   }
   
   return YES;
@@ -337,31 +335,17 @@ static NSError *LibRawError(NSString *errorDescription) {
   
   // Log debug message.
   NSLog(@"%@", [NSString stringWithFormat:@"Processing raw file: %@", rawFilePath]);
-//  
-//  // Prepare the processor for the next image.
-//  [self adjustOutputParametersWithSettings:settings error:errorHandler];
-//  [self openFile:rawFilePath error:errorHandler];
-//  [self unpack:errorHandler];
-//  [self process:errorHandler];
-//  [self ppmTiffWriter:tiffOutputPath error:errorHandler];
-//  //[self recycle];
-  const char *cRawFilePath = [rawFilePath UTF8String];
-  const char *cTiffFilePath = [tiffOutputPath UTF8String];
   
-  libraw_data_t *raw;
+  // Prepare the processor for the next image.
+  [self recycle];
   
-  raw = libraw_init(0);
+  [self openFile:rawFilePath error:errorHandler];
+  [self unpack:errorHandler];
   
-  libraw_open_file(raw, cRawFilePath);
+  [self adjustOutputParametersWithSettings:settings error:errorHandler];
   
-  raw->params.no_auto_bright = (int)1;
-  raw->params.use_camera_wb = (int)1;
-  raw->params.output_tiff = (int)1;
-  
-  libraw_unpack(raw);
-  libraw_dcraw_process(raw);
-  libraw_dcraw_ppm_tiff_writer(raw, cTiffFilePath);
-  libraw_close(raw);
+  [self process:errorHandler];
+  [self ppmTiffWriter:tiffOutputPath error:errorHandler];
   
   NSLog(@"%@", [NSString stringWithFormat:@"Successfully saved TIFF to: %@", tiffOutputPath]);
   return YES;
