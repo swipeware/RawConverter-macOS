@@ -64,21 +64,29 @@ static NSError *LibRawError(NSString *errorDescription) {
   return [NSString stringWithUTF8String:cString];
 }
 
+- (void)processError:(NSError **) errorHandler errorMessage:(NSString *)message {
+  if (errorHandler) {
+    *errorHandler = LibRawError(message);
+  }
+  else {
+    NSLog(@"ERROR: %@", message);
+  }
+}
+
 - (BOOL)openFile:(NSString *)filePath error:(NSError **)errorHandler {
-    const char *cFilePath = [filePath UTF8String];
-    
-    int result = libraw_open_file(rawContext, cFilePath);
-    
-    if (result != LIBRAW_SUCCESS) {
-        NSString *errorMessage = [self getErrorMessageForErrorCode:result];
-        
-        if (errorHandler) {
-            *errorHandler = LibRawError([NSString stringWithFormat:@"Failed to open file: %@", errorMessage]);
-        }
-        return NO;
-    }
-    
-    return YES;
+  const char *cFilePath = [filePath UTF8String];
+  
+  int result = libraw_open_file(rawContext, cFilePath);
+  
+  if (result != LIBRAW_SUCCESS) {
+    NSString *formatString = @"Failed to open file: %@";
+    NSString *librawError = [self getErrorMessageForErrorCode:result];
+    NSString *errorMessage = [NSString stringWithFormat:formatString, librawError];
+    [self processError:errorHandler errorMessage:errorMessage];
+    return NO;
+  }
+  
+  return YES;
 }
 
 - (BOOL)ppmTiffWriter:(NSString *)outputPath error:(NSError **)errorHandler {
@@ -88,12 +96,10 @@ static NSError *LibRawError(NSString *errorDescription) {
   int result = libraw_dcraw_ppm_tiff_writer(rawContext, cOutputPath);
   
   if (result != LIBRAW_SUCCESS) {
-    NSString *errorMessage = [self getErrorMessageForErrorCode:result];
-    
-    if (errorHandler) {
-      *errorHandler = LibRawError([NSString stringWithFormat:
-                                   @"Failed to save processed image to %@: %@", outputPath, errorMessage]);
-    }
+    NSString *formatString = @"Failed to save processed image to %@: %@";
+    NSString *librawError = [self getErrorMessageForErrorCode:result];
+    NSString *errorMessage = [NSString stringWithFormat:formatString, outputPath, librawError];
+    [self processError:errorHandler errorMessage:errorMessage];
     return NO;
   }
   
@@ -106,12 +112,10 @@ static NSError *LibRawError(NSString *errorDescription) {
   int result = libraw_dcraw_thumb_writer(rawContext, cOutputPath);
   
   if (result != LIBRAW_SUCCESS) {
-    NSString *errorMessage = [self getErrorMessageForErrorCode:result];
-    
-    if (errorHandler) {
-      *errorHandler = LibRawError([NSString stringWithFormat:
-                                   @"Failed to save processed thumbnail to %@: %@", outputPath, errorMessage]);
-    }
+    NSString *formatString = @"Failed to save processed thumbnail to %@: %@";
+    NSString *librawError = [self getErrorMessageForErrorCode:result];
+    NSString *errorMessage = [NSString stringWithFormat:formatString, outputPath, librawError];
+    [self processError:errorHandler errorMessage:errorMessage];
     return NO;
   }
   
@@ -120,35 +124,40 @@ static NSError *LibRawError(NSString *errorDescription) {
 
 - (BOOL)unpack:(NSError **)errorHandler {
   int result = libraw_unpack(rawContext);
+  
   if (result != LIBRAW_SUCCESS) {
-    if (errorHandler) {
-      NSString *errorMessage = [self getErrorMessageForErrorCode:result];
-      *errorHandler = LibRawError([NSString stringWithFormat:@"Failed to unpack raw file: %@", errorMessage]);
-    }
+    NSString *formatString = @"Failed to unpack raw file: %@";
+    NSString *librawError = [self getErrorMessageForErrorCode:result];
+    NSString *errorMessage = [NSString stringWithFormat:formatString, librawError];
+    [self processError:errorHandler errorMessage:errorMessage];
     return NO;
   }
+  
   return YES;
 }
 
 - (BOOL)unpackThumb:(NSError **)errorHandler {
   int result = libraw_unpack_thumb(rawContext);
+  
   if (result != LIBRAW_SUCCESS) {
-    if (errorHandler) {
-      NSString *errorMessage = [self getErrorMessageForErrorCode:result];
-      *errorHandler = LibRawError([NSString stringWithFormat:@"Failed to unpack thumbnail for raw file: %@", errorMessage]);
-    }
+    NSString *formatString = @"Failed to unpack thumbnail for raw file: %@";
+    NSString *librawError = [self getErrorMessageForErrorCode:result];
+    NSString *errorMessage = [NSString stringWithFormat:formatString, librawError];
+    [self processError:errorHandler errorMessage:errorMessage];
     return NO;
   }
+  
   return YES;
 }
 
 - (BOOL)process:(NSError **)errorHandler {
   int result = libraw_dcraw_process(rawContext);
+  
   if (result != LIBRAW_SUCCESS) {
-    if (errorHandler) {
-      NSString *errorMessage = [self getErrorMessageForErrorCode:result];
-      *errorHandler = LibRawError([NSString stringWithFormat:@"Failed to process raw file: %@", errorMessage]);
-    }
+    NSString *formatString = @"Failed to process raw file: %@";
+    NSString *librawError = [self getErrorMessageForErrorCode:result];
+    NSString *errorMessage = [NSString stringWithFormat:formatString, librawError];
+    [self processError:errorHandler errorMessage:errorMessage];
     return NO;
   }
   return YES;
@@ -190,13 +199,10 @@ static NSError *LibRawError(NSString *errorDescription) {
 }
 
 - (BOOL)adjustOutputParametersWithSettings:(NSArray<NSString *> *)settings error:(NSError **)errorHandler {
-  // Log the size of libraw_rawdata_t for debugging (using NSLog for demonstration)
-  //NSLog(@"Size: %lu", (unsigned long)sizeof(libraw_data_t));
-  
   // Iterate over the settings array using an index so we can fetch subsequent values
   for (NSUInteger i = 0; i < settings.count; i++) {
     NSString *setting = settings[i];
-    NSLog(@"Processing option: %@", setting);
+    NSLog(@"DEBUG: Processing option: %@", setting);
     if ([setting isEqualToString:@"-T"]) { // Output TIFF
       rawContext->params.output_tiff = (int)1;
     }
@@ -205,7 +211,7 @@ static NSError *LibRawError(NSString *errorDescription) {
     }
     else if ([setting isEqualToString:@"-n"]) { // Noise threshold
       if (i + 1 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing noise threshold value after -n"); }
+        [self processError: errorHandler errorMessage:@"Missing noise threshold value after -n"];
         return NO;
       }
       i++; // advance to threshold value
@@ -215,7 +221,7 @@ static NSError *LibRawError(NSString *errorDescription) {
     }
     else if ([setting isEqualToString:@"-C"]) { // Red and blue magnification
       if (i + 1 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing red and blue values after -C"); }
+        [self processError:errorHandler errorMessage:@"Missing red and blue values after -C"];
         return NO;
       }
       i++; // advance to the string with red and blue values
@@ -223,7 +229,7 @@ static NSError *LibRawError(NSString *errorDescription) {
       // Split the string on spaces (assuming values are space-separated)
       NSArray<NSString *> *parts = [partsStr componentsSeparatedByString:@" "];
       if (parts.count < 2) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Invalid red and blue values for -C"); }
+        [self processError:errorHandler errorMessage:@"Invalid red and blue values for -C"];
         return NO;
       }
       double red = [parts[0] doubleValue];
@@ -235,7 +241,7 @@ static NSError *LibRawError(NSString *errorDescription) {
     }
     else if ([setting isEqualToString:@"-H"]) { // Highlights
       if (i + 1 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing highlight value after -H"); }
+        [self processError:errorHandler errorMessage:@"Missing highlight value after -H"];
         return NO;
       }
       i++;
@@ -247,11 +253,11 @@ static NSError *LibRawError(NSString *errorDescription) {
       rawContext->params.use_auto_wb = 1;
     }
     else if ([setting isEqualToString:@"-w"]) { // Camera white balance
-      rawContext->params.use_camera_wb = (int)1;
+      rawContext->params.use_camera_wb = 1;
     }
     else if ([setting isEqualToString:@"-o"]) { // Color space
       if (i + 1 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing color space value after -o"); }
+        [self processError:errorHandler errorMessage:@"Missing color space value after -o"];
         return NO;
       }
       i++;
@@ -261,7 +267,7 @@ static NSError *LibRawError(NSString *errorDescription) {
     }
     else if ([setting isEqualToString:@"-q"]) { // Interpolation
       if (i + 1 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing interpolation value after -q"); }
+        [self processError:errorHandler errorMessage:@"Missing interpolation value after -q"];
         return NO;
       }
       i++;
@@ -271,7 +277,7 @@ static NSError *LibRawError(NSString *errorDescription) {
     }
     else if ([setting isEqualToString:@"-m"]) { // Cleanup passes
       if (i + 1 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing cleanup passes value after -m"); }
+        [self processError:errorHandler errorMessage:@"Missing cleanup passes value after -m"];
         return NO;
       }
       i++;
@@ -287,7 +293,7 @@ static NSError *LibRawError(NSString *errorDescription) {
     }
     else if ([setting isEqualToString:@"-b"]) { // Brightness
       if (i + 1 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing brightness value after -b"); }
+        [self processError:errorHandler errorMessage:@"Missing brightness value after -b"];
         return NO;
       }
       i++;
@@ -297,7 +303,7 @@ static NSError *LibRawError(NSString *errorDescription) {
     }
     else if ([setting isEqualToString:@"-g"]) { // Gamma
       if (i + 2 >= settings.count) {
-        if (errorHandler) { *errorHandler = LibRawError(@"Missing gamma values after -g"); }
+        [self processError:errorHandler errorMessage:@"Missing gamma values after -g"];
         return NO;
       }
       i++;
@@ -311,9 +317,8 @@ static NSError *LibRawError(NSString *errorDescription) {
       rawContext->params.gamm[2] = gammaToeSlope;
     }
     else {
-      if (errorHandler) {
-        *errorHandler = LibRawError([NSString stringWithFormat:@"Unknown setting: %@", setting]);
-      }
+      NSString *errorMessage = [NSString stringWithFormat:@"Unknown setting: %@", setting];
+      [self processError:errorHandler errorMessage:errorMessage];
       return NO;
     }
   }
@@ -324,19 +329,18 @@ static NSError *LibRawError(NSString *errorDescription) {
 - (BOOL)convertRawToTiffWithRawFilePath:(NSString *)rawFilePath
                          tiffOutputPath:(NSString *)tiffOutputPath
                                settings:(NSArray<NSString *> *)settings
-                            error:(NSError **)errorHandler {
-  // Check if the raw file exists.
+                            error:(NSError **)errorHandler
+{
+  // Check if the raw file exists
   if (![[NSFileManager defaultManager] fileExistsAtPath:rawFilePath]) {
-    if (errorHandler) {
-      *errorHandler = LibRawError([NSString stringWithFormat:@"Raw file not found %@", rawFilePath]);
-    }
+    NSString *errorMessage = [NSString stringWithFormat:@"Raw file not found %@", rawFilePath];
+    [self processError:errorHandler errorMessage:errorMessage];
     return NO;
   }
   
-  // Log debug message.
-  NSLog(@"%@", [NSString stringWithFormat:@"Processing raw file: %@", rawFilePath]);
+  NSLog(@"DEBUG: %@", [NSString stringWithFormat:@"Processing raw file: %@", rawFilePath]);
   
-  // Prepare the processor for the next image.
+  // Prepare the processor for the next image
   [self recycle];
   
   [self openFile:rawFilePath error:errorHandler];
@@ -355,25 +359,24 @@ static NSError *LibRawError(NSString *errorDescription) {
                     thumbOutputPath:(NSString *)thumbOutputPath
                              error:(NSError **)errorHandler
 {
+  // Check if the raw file exists
   if (![[NSFileManager defaultManager] fileExistsAtPath:rawFilePath]) {
-    if (errorHandler) {
-      *errorHandler = LibRawError([NSString stringWithFormat:@"Raw file not found %@", rawFilePath]);
-    }
+    NSString *errorMessage = [NSString stringWithFormat:@"Raw file not found %@", rawFilePath];
+    [self processError:errorHandler errorMessage:errorMessage];
     return NO;
   }
   
-  // Log that we are processing the thumb file.
-  NSLog(@"%@", [NSString stringWithFormat:@"Processing thumb file: %@", rawFilePath]);
+  NSLog(@"DEBUG: %@", [NSString stringWithFormat:@"Processing thumb file: %@", rawFilePath]);
   
-  // Prepare processor for the next thumb.
+  // Prepare processor for the next thumb
   [self recycle];
   
-  // Open the raw file.
+  // Open and proces thumb for the raw file
   [self openFile:rawFilePath error:errorHandler];
   [self unpackThumb:errorHandler];
   [self thumbWriter:thumbOutputPath error:errorHandler];
   
-  NSLog(@"%@", [NSString stringWithFormat:@"Successfully saved thumb to: %@", thumbOutputPath]);
+  NSLog(@"DEBUG: %@", [NSString stringWithFormat:@"Successfully saved thumb to: %@", thumbOutputPath]);
   return YES;
 }
 
