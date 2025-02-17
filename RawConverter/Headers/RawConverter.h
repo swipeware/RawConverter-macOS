@@ -1,19 +1,19 @@
 //
-//  LibRawWrapper.h
-//  LibRaw
+//  RawConverter.h
+//  RawConverter
 //
 //  Created by Ingemar Bergmark on 2025-02-02.
 //
 
-#ifndef LibRawWrapper_h
-#define LibRawWrapper_h
+#ifndef RawConverter_h
+#define RawConverter_h
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 // Public interface
-@interface LibRawWrapper : NSObject
+@interface RawConverter : NSObject
 
 // Initializers
 - (instancetype)init NS_UNAVAILABLE; // Not needed as initWithError is the main initializer
@@ -33,4 +33,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#endif /* LibRawWrapper_h */
+#endif /* RawConverter_h */

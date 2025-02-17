@@ -20,32 +20,34 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		37D4CCD02D4FAEB200D4045B /* LibRaw.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LibRaw.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		37D4CCD02D4FAEB200D4045B /* RawConverter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RawConverter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		37D4CCD52D4FAEB200D4045B /* Exceptions for "LibRaw" folder in "LibRaw" target */ = {
+		37D4CCD52D4FAEB200D4045B /* Exceptions for "RawConverter" folder in "RawConverter" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Dylib/libjpeg.8.dylib,
 				Dylib/liblcms2.2.dylib,
+				Dylib/libomp.dylib,
 				Dylib/libz.1.dylib,
 				Scripts/fixlibs.sh,
 			);
 			publicHeaders = (
-				Headers/LibRawFramework.h,
-				Headers/LibRawWrapper.h,
+				Headers/RawConverter.h,
+				Headers/RawConverterFramework.h,
 			);
-			target = 37D4CCCF2D4FAEB200D4045B /* LibRaw */;
+			target = 37D4CCCF2D4FAEB200D4045B /* RawConverter */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		37D4CD092D4FB23600D4045B /* Exceptions for "LibRaw" folder in "Embed Libraries" phase from "LibRaw" target */ = {
+		37D4CD092D4FB23600D4045B /* Exceptions for "RawConverter" folder in "Embed Libraries" phase from "RawConverter" target */ = {
 			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
 			attributesByRelativePath = {
 				Dylib/libjpeg.8.dylib = (CodeSignOnCopy, );
 				Dylib/liblcms2.2.dylib = (CodeSignOnCopy, );
+				Dylib/libomp.dylib = (CodeSignOnCopy, );
 				Dylib/libraw.24.dylib = (CodeSignOnCopy, );
 				Dylib/libz.1.dylib = (CodeSignOnCopy, );
 			};
@@ -53,6 +55,7 @@
 			membershipExceptions = (
 				Dylib/libjpeg.8.dylib,
 				Dylib/liblcms2.2.dylib,
+				Dylib/libomp.dylib,
 				Dylib/libraw.24.dylib,
 				Dylib/libz.1.dylib,
 			);
@@ -60,13 +63,13 @@
 /* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		37D4CCD22D4FAEB200D4045B /* LibRaw */ = {
+		37D4CCD22D4FAEB200D4045B /* RawConverter */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				37D4CCD52D4FAEB200D4045B /* Exceptions for "LibRaw" folder in "LibRaw" target */,
-				37D4CD092D4FB23600D4045B /* Exceptions for "LibRaw" folder in "Embed Libraries" phase from "LibRaw" target */,
+				37D4CCD52D4FAEB200D4045B /* Exceptions for "RawConverter" folder in "RawConverter" target */,
+				37D4CD092D4FB23600D4045B /* Exceptions for "RawConverter" folder in "Embed Libraries" phase from "RawConverter" target */,
 			);
-			path = LibRaw;
+			path = RawConverter;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -85,7 +88,7 @@
 		37D4CCC62D4FAEB200D4045B = {
 			isa = PBXGroup;
 			children = (
-				37D4CCD22D4FAEB200D4045B /* LibRaw */,
+				37D4CCD22D4FAEB200D4045B /* RawConverter */,
 				37D4CD0A2D4FB25900D4045B /* Frameworks */,
 				37D4CCD12D4FAEB200D4045B /* Products */,
 			);
@@ -94,7 +97,7 @@
 		37D4CCD12D4FAEB200D4045B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				37D4CCD02D4FAEB200D4045B /* LibRaw.framework */,
+				37D4CCD02D4FAEB200D4045B /* RawConverter.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -119,9 +122,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		37D4CCCF2D4FAEB200D4045B /* LibRaw */ = {
+		37D4CCCF2D4FAEB200D4045B /* RawConverter */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 37D4CCD62D4FAEB200D4045B /* Build configuration list for PBXNativeTarget "LibRaw" */;
+			buildConfigurationList = 37D4CCD62D4FAEB200D4045B /* Build configuration list for PBXNativeTarget "RawConverter" */;
 			buildPhases = (
 				37D4CCCB2D4FAEB200D4045B /* Headers */,
 				37D4CCCC2D4FAEB200D4045B /* Sources */,
@@ -134,13 +137,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				37D4CCD22D4FAEB200D4045B /* LibRaw */,
+				37D4CCD22D4FAEB200D4045B /* RawConverter */,
 			);
-			name = LibRaw;
+			name = RawConverter;
 			packageProductDependencies = (
 			);
 			productName = LibRaw;
-			productReference = 37D4CCD02D4FAEB200D4045B /* LibRaw.framework */;
+			productReference = 37D4CCD02D4FAEB200D4045B /* RawConverter.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -158,7 +161,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 37D4CCCA2D4FAEB200D4045B /* Build configuration list for PBXProject "LibRaw" */;
+			buildConfigurationList = 37D4CCCA2D4FAEB200D4045B /* Build configuration list for PBXProject "RawConverter" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -172,7 +175,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				37D4CCCF2D4FAEB200D4045B /* LibRaw */,
+				37D4CCCF2D4FAEB200D4045B /* RawConverter */,
 			);
 		};
 /* End PBXProject section */
@@ -213,8 +216,8 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/LibRaw/Headers",
-					"$(PROJECT_DIR)/LibRaw/Internal",
+					"$(PROJECT_DIR)/RawConverter/Headers",
+					"$(PROJECT_DIR)/RawConverter/Internal",
 				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -225,11 +228,11 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/LibRaw/Dylib",
+					"$(PROJECT_DIR)/RawConverter/Dylib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				MODULEMAP_FILE = "$(PROJECT_DIR)/LibRaw/Modules/module.modulemap";
+				MODULEMAP_FILE = "$(PROJECT_DIR)/RawConverter/Modules/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swipeware.LibRaw;
@@ -237,7 +240,7 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 6.0;
-				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/LibRaw/Internal";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/RawConverter/Internal";
 			};
 			name = Debug;
 		};
@@ -256,8 +259,8 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/LibRaw/Headers",
-					"$(PROJECT_DIR)/LibRaw/Internal",
+					"$(PROJECT_DIR)/RawConverter/Headers",
+					"$(PROJECT_DIR)/RawConverter/Internal",
 				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -268,18 +271,18 @@
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/LibRaw/Dylib",
+					"$(PROJECT_DIR)/RawConverter/Dylib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 11.0;
 				MARKETING_VERSION = 1.0;
-				MODULEMAP_FILE = "$(PROJECT_DIR)/LibRaw/Modules/module.modulemap";
+				MODULEMAP_FILE = "$(PROJECT_DIR)/RawConverter/Modules/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = com.swipeware.LibRaw;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
-				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/LibRaw/Internal";
+				USER_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/RawConverter/Internal";
 			};
 			name = Release;
 		};
@@ -405,7 +408,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		37D4CCCA2D4FAEB200D4045B /* Build configuration list for PBXProject "LibRaw" */ = {
+		37D4CCCA2D4FAEB200D4045B /* Build configuration list for PBXProject "RawConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				37D4CCD92D4FAEB200D4045B /* Debug */,
@@ -414,7 +417,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		37D4CCD62D4FAEB200D4045B /* Build configuration list for PBXNativeTarget "LibRaw" */ = {
+		37D4CCD62D4FAEB200D4045B /* Build configuration list for PBXNativeTarget "RawConverter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				37D4CCD72D4FAEB200D4045B /* Debug */,

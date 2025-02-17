@@ -1,16 +1,16 @@
 //
-//  LibRawWrapper.mm
-//  LibRaw
+//  RawConverterFramework.mm
+//  RawConverter
 //
 //  Created by Ingemar Bergmark on 2025-02-02.
 //
 
-#import "LibRawWrapper.h"
+#import "RawConverterFramework.h"
 #include "libraw.h"
   
   
 // File level configuration
-static NSString * const LIBRAW_DOMAIN = @"com.swipeware.LibRawWrapper";
+static NSString * const LIBRAW_DOMAIN = @"com.swipeware.RawConverter";
 
 static NSError *LibRawError(NSString *errorDescription) {
     NSError *error = [NSError errorWithDomain: LIBRAW_DOMAIN
@@ -21,7 +21,7 @@ static NSError *LibRawError(NSString *errorDescription) {
 
 
 // Instance variables
-@interface LibRawWrapper ()
+@interface RawConverter ()
 {
   libraw_data_t *rawContext;
 }
@@ -29,7 +29,7 @@ static NSError *LibRawError(NSString *errorDescription) {
 
 
 // Let's define the wrapper!
-@implementation LibRawWrapper
+@implementation RawConverter
 
 - (nullable instancetype)initWithError:(NSError **)errorHandler {
   self = [super init];

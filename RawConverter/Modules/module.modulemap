@@ -1,0 +1,4 @@
+framework module RawConverter {
+  umbrella header "RawConverterFramework.h"
+  export *
+}

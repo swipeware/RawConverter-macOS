@@ -1,4 +1,0 @@
-framework module LibRaw {
-  umbrella header "LibRawFramework.h"
-  export *
-}
