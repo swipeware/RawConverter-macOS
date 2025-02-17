@@ -1,11 +1,11 @@
 //
-//  RawConverterFramework.mm
+//  RawConverter.mm
 //  RawConverter
 //
 //  Created by Ingemar Bergmark on 2025-02-02.
 //
 
-#import "RawConverterFramework.h"
+#import "RawConverter.h"
 #include "libraw.h"
   
   
