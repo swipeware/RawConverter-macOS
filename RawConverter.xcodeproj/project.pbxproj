@@ -235,7 +235,7 @@
 				MODULEMAP_FILE = "$(PROJECT_DIR)/RawConverter/Modules/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = com.swipeware.LibRaw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swipeware.RawConverter;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -278,7 +278,7 @@
 				MODULEMAP_FILE = "$(PROJECT_DIR)/RawConverter/Modules/module.modulemap";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
-				PRODUCT_BUNDLE_IDENTIFIER = com.swipeware.LibRaw;
+				PRODUCT_BUNDLE_IDENTIFIER = com.swipeware.RawConverter;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
