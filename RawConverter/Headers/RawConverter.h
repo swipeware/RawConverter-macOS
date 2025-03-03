@@ -29,6 +29,11 @@ NS_ASSUME_NONNULL_BEGIN
                          tiffOutputPath:(NSString *)tiffOutputPath
                                settings:(NSArray<NSString *> *)settings
                                   error:(NSError **)errorHandler;
+
+- (BOOL)createThumbWithRawFilePath:(NSString *)rawFilePath
+                    thumbOutputPath:(NSString *)thumbOutputPath
+                             error:(NSError **)errorHandler;
+
 @end
 
 NS_ASSUME_NONNULL_END
