@@ -27,6 +27,7 @@
 		37D4CCD52D4FAEB200D4045B /* Exceptions for "RawConverter" folder in "RawConverter" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Config/RawConverterVersion.xcconfig,
 				Dylib/libjpeg.8.dylib,
 				Dylib/liblcms2.2.dylib,
 				Dylib/libomp.dylib,
@@ -203,6 +204,8 @@
 /* Begin XCBuildConfiguration section */
 		37D4CCD72D4FAEB200D4045B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 37D4CCD22D4FAEB200D4045B /* RawConverter */;
+			baseConfigurationReferenceRelativePath = Config/RawConverterVersion.xcconfig;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -246,6 +249,8 @@
 		};
 		37D4CCD82D4FAEB200D4045B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 37D4CCD22D4FAEB200D4045B /* RawConverter */;
+			baseConfigurationReferenceRelativePath = Config/RawConverterVersion.xcconfig;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
