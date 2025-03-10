@@ -12,4 +12,4 @@ git=`sh /etc/profile; which git`
 cd ${PROJECT_DIR}
 commitCount=`"$git" rev-list --all --count`
 projectVersionBuildNumber=$(($commitCount + ${VERSION_OFFSET}))
-marketingVersionString=`"$git" describe --dirty --match '[0-9]*' --tags --abbrev=0`
+marketingVersionString=`"$git" describe --match '[0-9]*' --tags --abbrev=0`
