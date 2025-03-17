@@ -19,20 +19,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE; // Not needed as initWithError is the main initializer
 - (nullable instancetype)initWithError:(NSError **)error NS_DESIGNATED_INITIALIZER NS_SWIFT_NAME(init()) ;
 
-// Class methods
-+ (NSString *)libRawVersion;
-+ (int32_t)cameraCount;
-+ (NSArray<NSString *> *)supportedCameras;
-  
-// Instance methods
-- (BOOL)convertRawToTiffWithRawFilePath:(NSString *)rawFilePath
-                         tiffOutputPath:(NSString *)tiffOutputPath
-                               settings:(NSArray<NSString *> *)settings
-                                  error:(NSError **)errorHandler;
+// Static methods
++ (NSString*)libRawVersion;
++ (NSInteger)cameraCount;
++ (NSArray<NSString*>*)supportedCameras;
 
-- (BOOL)createThumbWithRawFilePath:(NSString *)rawFilePath
-                    thumbOutputPath:(NSString *)thumbOutputPath
-                             error:(NSError **)errorHandler;
+// Instance methods
+- (void)convertRawToTiffWithRawFilePath:(NSString*)rawFilePath
+                         tiffOutputPath:(NSString*)tiffOutputPath
+                               settings:(NSArray<NSString*>*)settings;
+
+- (void)createThumbWithRawFilePath:(NSString*)rawFilePath
+                   thumbOutputPath:(NSString*)thumbOutputPath;
 
 @end
 
