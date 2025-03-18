@@ -247,12 +247,10 @@ public:
 // ====================================================================================================================
 
 // Instance variables
-@interface
-
-RawConverter() {
+@interface RawConverter()
+{
   std::unique_ptr<RawConverterPrivate> _privateImpl;
 }
-
 @end
 
 // Let's define the wrapper!
