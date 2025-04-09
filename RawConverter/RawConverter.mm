@@ -18,7 +18,7 @@ private:
   
 public:
   RawConverterPrivate() {
-    NSLog(@"DEBUG: Successfully initialized RawConverter");
+    NSLog(@"INFO: initialized RawConverter");
   }
   
   std::string getErrorMessageForErrorCode(int errorCode) {
@@ -46,7 +46,6 @@ public:
     // Iterate over the settings array using an index so we can fetch subsequent values
     for (int i = 0; i < settings.size(); i++) {
       std::string& setting = settings[i];
-      NSLog(@"DEBUG: Processing option: %@", [NSString stringWithUTF8String:setting.c_str()]);
       
       if (setting == "-T") { // Output TIFF
         rawConverter.output_params_ptr()->output_tiff = 1;
@@ -58,7 +57,7 @@ public:
       
       else if (setting == "-n") { // Noise threshold
         if (i + 1 >= settings.size()) {
-          NSLog(@"Missing noise threshold value after -n");
+          NSLog(@"ERROR: Missing noise threshold value after -n");
           return;
         }
         i++; // advance to threshold value
@@ -67,14 +66,14 @@ public:
           rawConverter.output_params_ptr()->threshold = threshold;
         }
         catch (const std::exception& e) {
-          NSLog(@"Invalid noise threshold value: %s", settings[i].c_str());
+          NSLog(@"ERROR: Invalid noise threshold value: %s", settings[i].c_str());
           return;
         }
       }
       
       else if (setting == "-C") { // Red and blue magnification
         if (i + 1 >= settings.size()) {
-          NSLog(@"Missing red and blue values after -C");
+          NSLog(@"ERROR: Missing red and blue values after -C");
           return;
         }
         i++; // advance to the string with red and blue values
@@ -87,7 +86,7 @@ public:
           }
         }
         if (parts.size() < 2) {
-          NSLog(@"Invalid red and blue values for -C");
+          NSLog(@"ERROR: Invalid red and blue values for -C");
           return;
         }
         try {
@@ -99,14 +98,14 @@ public:
           rawConverter.output_params_ptr()->aber[2] = 1.0 / blue;
         }
         catch (const std::exception& e) {
-          NSLog(@"Invalid red/blue magnification values: %s", partsStr.c_str());
+          NSLog(@"ERROR: Invalid red/blue magnification values: %s", partsStr.c_str());
           return;
         }
       }
       
       else if (setting == "-H") { // Highlights
         if (i + 1 >= settings.size()) {
-          NSLog(@"Missing highlight value after -H");
+          NSLog(@"ERROR: Missing highlight value after -H");
           return;
         }
         i++;
@@ -116,7 +115,7 @@ public:
           rawConverter.output_params_ptr()->highlight = highlight;
         }
         catch (const std::exception& e) {
-          NSLog(@"Invalid highlight value: %s", highlightStr.c_str());
+          NSLog(@"ERROR: Invalid highlight value: %s", highlightStr.c_str());
           return;
         }
       }
@@ -131,7 +130,7 @@ public:
       
       else if (setting == "-o") { // Color space
         if (i + 1 >= settings.size()) {
-          NSLog(@"Missing colorspace value after -o");
+          NSLog(@"ERROR: Missing colorspace value after -o");
           return;
         }
         i++;
@@ -141,14 +140,14 @@ public:
           rawConverter.output_params_ptr()->output_color = outputColor;
         }
         catch (const std::exception& e) {
-          NSLog(@"Invalid colorspace value: %s", outputColorStr.c_str());
+          NSLog(@"ERROR: Invalid colorspace value: %s", outputColorStr.c_str());
           return;
         }
       }
       
       else if (setting == "-q") { // Interpolation
         if (i + 1 >= settings.size()) {
-          NSLog(@"Missing interpolation value after -q");
+          NSLog(@"ERROR: Missing interpolation value after -q");
           return;
         }
         i++;
@@ -158,14 +157,14 @@ public:
           rawConverter.output_params_ptr()->user_qual = interpolation;
         }
         catch (const std::exception& e) {
-          NSLog(@"Invalid interpolation value: %s", interpolationStr.c_str());
+          NSLog(@"ERROR: Invalid interpolation value: %s", interpolationStr.c_str());
           return;
         }
       }
       
       else if (setting == "-m") { // Cleanup passes
         if (i + 1 >= settings.size()) {
-          NSLog(@"Missing cleanup passes value after -m");
+          NSLog(@"ERROR: Missing cleanup passes value after -m");
           return;
         }
         i++;
@@ -175,7 +174,7 @@ public:
           rawConverter.output_params_ptr()->med_passes = cleanupPasses;
         }
         catch (const std::exception& e) {
-          NSLog(@"Invalid cleanup passes value: %s", cleanupStr.c_str());
+          NSLog(@"ERROR: Invalid cleanup passes value: %s", cleanupStr.c_str());
           return;
         }
       }
@@ -190,7 +189,7 @@ public:
       
       else if (setting == "-b") { // Brightness
         if (i + 1 >= settings.size()) {
-          NSLog(@"Missing brightness value after -b");
+          NSLog(@"ERROR: Missing brightness value after -b");
           return;
         }
         i++;
@@ -200,14 +199,14 @@ public:
           rawConverter.output_params_ptr()->bright = brightness;
         }
         catch (const std::exception& e) {
-          NSLog(@"Invalid brightness value: %s", brightnessStr.c_str());
+          NSLog(@"ERROR: Invalid brightness value: %s", brightnessStr.c_str());
           return;
         }
       }
       
       else if (setting == "-g") { // Gamma
         if (i + 2 >= settings.size()) {
-          NSLog(@"Missing gamma values after -g");
+          NSLog(@"ERROR: Missing gamma values after -g");
           return;
         }
         i++;
@@ -221,7 +220,7 @@ public:
       }
       
       else {
-        NSLog(@"Unknown setting %s", setting.c_str());
+        NSLog(@"ERROR: Unknown setting %s", setting.c_str());
       }
     }
   }
@@ -279,7 +278,7 @@ std::vector<std::string> convertNSArrayToVector(NSArray<NSString *> *settings) {
 }
 
 - (void)dealloc {
-  NSLog(@"DEBUG: Successful RawConverter dealloc");
+  NSLog(@"INFO: deallocated RawConverter");
 }
 
 + (NSString *)libRawVersion {
@@ -310,18 +309,16 @@ std::vector<std::string> convertNSArrayToVector(NSArray<NSString *> *settings) {
                    thumbOutputPath:(NSString *)thumbOutputPath
 {
   if (!_privateImpl) {
-    NSLog(@"DEBUG: Error: RawConverter instance is not initialized");
+    NSLog(@"ERROR: RawConverter instance is not initialized");
     return;
   }
 
   if (![[NSFileManager defaultManager] fileExistsAtPath:rawFilePath]) {
-    NSLog(@"DEBUG: Raw file not found: %@", rawFilePath);
+    NSLog(@"ERROR: Raw file not found: %@", rawFilePath);
     return;
   }
     
-  NSLog(@"DEBUG: Processing thumb file: %@", rawFilePath);
   _privateImpl->createThumbWithRawFilePath([rawFilePath UTF8String], [thumbOutputPath UTF8String]);
-  NSLog(@"DEBUG: Successfully saved thumb to: %@", thumbOutputPath);
 }
 
 - (void)convertRawToTiffWithRawFilePath:(NSString *)rawFilePath
@@ -329,19 +326,17 @@ std::vector<std::string> convertNSArrayToVector(NSArray<NSString *> *settings) {
                                settings:(NSArray<NSString *> *)settings
 {
   if (!_privateImpl) {
-    NSLog(@"DEBUG: Error: RawConverter instance is not initialized");
+    NSLog(@"ERROR: RawConverter instance is not initialized");
     return;
   }
 
   if (![[NSFileManager defaultManager] fileExistsAtPath:rawFilePath]) {
-    NSLog(@"DEBUG: Raw file not found: %@", rawFilePath);
+    NSLog(@"ERROR: Raw file not found: %@", rawFilePath);
     return;
   }
 
-  NSLog(@"DEBUG: Processing raw file: %@", rawFilePath);
   std::vector<std::string> vectorSettings = convertNSArrayToVector(settings);
   _privateImpl->convertRawToTiffWithRawFilePath([rawFilePath UTF8String], [tiffOutputPath UTF8String], vectorSettings);
-  NSLog(@"DEBUG: Successfully saved TIFF to: %@", tiffOutputPath);
 }
 
 @end
