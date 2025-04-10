@@ -18,7 +18,7 @@ private:
   
 public:
   RawConverterPrivate() {
-    NSLog(@"INFO: initialized RawConverter");
+    // Intentionally empty
   }
   
   std::string getErrorMessageForErrorCode(int errorCode) {
@@ -278,7 +278,7 @@ std::vector<std::string> convertNSArrayToVector(NSArray<NSString *> *settings) {
 }
 
 - (void)dealloc {
-  NSLog(@"INFO: deallocated RawConverter");
+  // Intentionally empty
 }
 
 + (NSString *)libRawVersion {
